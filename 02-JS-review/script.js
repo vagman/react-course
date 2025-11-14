@@ -145,7 +145,7 @@ function getBook(id) {
 }
 
 // Destructuring example
-const book = getBook(1);
+const book = getBook(3);
 book;
 
 const {title, author, pages, publicationDate, genres, hasMovieAdaptation} = book;
@@ -206,10 +206,20 @@ console.log(book.translations.spanish);
 const spanishTranslation = book.translations.spanish || 'NOT TRANSLATED';
 console.log(spanishTranslation);
 
-console.log(book.reviews.librarything.reviewsCount);
-const countWrong = book.reviews.librarything.reviewsCount || "NO DATA";
-console.log(countWrong); // 'NO DATA' instead of 0 which is data!
+// console.log(book.reviews.librarything.reviewsCount);
+// const countWrong = book.reviews.librarything.reviewsCount || "NO DATA";
+// console.log(countWrong); // 'NO DATA' instead of 0 which is data!
 
 // Nullish coalescing operator (ES2020)
-const count = book.reviews.librarything.reviewsCount ?? "NO DATA";
-console.log(count); // 0
+// const count = book.reviews.librarything.reviewsCount ?? "NO DATA";
+// console.log(count); // 0
+
+// Optional chaining (ES2020)
+function getTotalReviewCount(book) {
+  const goodRead = book.reviews?.goodreads?.reviewsCount;
+  const libraryThing = book.reviews.librarything?.reviewsCount ?? 0;
+
+  return goodRead + libraryThing;
+}
+
+console.log(getTotalReviewCount(book));
