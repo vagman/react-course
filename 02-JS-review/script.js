@@ -144,6 +144,9 @@ function getBook(id) {
   return data.find((d) => d.id === id);
 }
 
+/*
+
+
 // Destructuring example
 const book = getBook(3);
 book;
@@ -214,6 +217,9 @@ console.log(spanishTranslation);
 // const count = book.reviews.librarything.reviewsCount ?? "NO DATA";
 // console.log(count); // 0
 
+console.log(getTotalReviewCount(book));
+*/
+
 // Optional chaining (ES2020)
 function getTotalReviewCount(book) {
   const goodRead = book.reviews?.goodreads?.reviewsCount;
@@ -222,4 +228,23 @@ function getTotalReviewCount(book) {
   return goodRead + libraryThing;
 }
 
-console.log(getTotalReviewCount(book));
+// Map Methods: map(), filter(), reduce()
+const arr = [ 1, 2, 3, 4, 5 ].map((element) => element * 2);
+console.log(arr);
+
+// Array of strings (titles only)
+const books = getBooks();
+const bookTitles = books.map((book) => book.title)
+console.log(bookTitles);
+
+// Array of objects (title + author) - Data "cleaning"
+const essentialBookData = books.map((book) => ({
+  title: book.title,
+  author: book.author,
+  reviewsCount: getTotalReviewCount(book),
+}));
+
+console.log(typeof(essentialBookData));
+console.log(Array.isArray(essentialBookData)); // Arrays are objects!
+console.log(essentialBookData);
+
