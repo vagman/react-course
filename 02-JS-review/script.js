@@ -142,3 +142,38 @@ function getBooks() {
 function getBook(id) {
   return data.find((d) => d.id === id);
 }
+
+// Destructuring example
+const book = getBook(1);
+book;
+
+const {title, author, pages, publicationDate, genres, hasMovieAdaptation} = book;
+
+console.log(title, author, genres);
+
+const [primaryGenre, secondaryGenre, ...otherGenres] = genres;
+console.log(primaryGenre, secondaryGenre, otherGenres);
+
+// Spread operator example
+const newGenres = [...genres, "epic fantasy"]; // Or ["epic fantasy", ...genres]
+newGenres;
+
+const updatedBook = { 
+  ...book, 
+  // Adding a new property
+  moviePublicationDate: '2001-12-19', 
+
+  // Updating an existing property
+  pages: 1210 
+};
+updatedBook;
+
+// Template literals example
+const summary = `${title}, is a ${pages}-page long book, was written by ${author} and published in ${publicationDate.split('-')[0]}. The book has ${book.hasMovieAdaptation ? '' : 'not'} been adapted as a movie.`;
+summary;
+
+// Ternaries instead of if/else statements
+const pagesRange = pages > 1000 ? 'over a thousand pages' : 'less that 1000 pages';
+pagesRange;
+console.log(`The book has ${pagesRange}.`);
+
