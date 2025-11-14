@@ -1,3 +1,4 @@
+/* eslint-disable */
 const data = [
   {
     id: 1,
@@ -186,3 +187,29 @@ summary;
 const pagesRange = pages > 1000 ? 'over a thousand pages' : 'less that 1000 pages';
 pagesRange;
 console.log(`The book has ${pagesRange}.`);
+
+// Short-circuiting with && and ||
+console.log(true && "Some String");
+console.log(false && "Some String");
+
+console.log(hasMovieAdaptation || "This book has a movie.");
+
+// Falsy values: 0, '', null, undefined
+console.log('jonas' && "Some string");
+console.log(0 && 'Some string');
+
+console.log(true || 'Some string');
+console.log(false || 'Some string');
+
+console.log(book.translations.spanish);
+
+const spanishTranslation = book.translations.spanish || 'NOT TRANSLATED';
+console.log(spanishTranslation);
+
+console.log(book.reviews.librarything.reviewsCount);
+const countWrong = book.reviews.librarything.reviewsCount || "NO DATA";
+console.log(countWrong); // 'NO DATA' instead of 0 which is data!
+
+// Nullish coalescing operator (ES2020)
+const count = book.reviews.librarything.reviewsCount ?? "NO DATA";
+console.log(count); // 0
