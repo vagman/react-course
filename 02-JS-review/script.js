@@ -248,3 +248,12 @@ console.log(typeof(essentialBookData));
 console.log(Array.isArray(essentialBookData)); // Arrays are objects!
 console.log(essentialBookData);
 
+// Array.filter() method
+const longBooksWithMovie = books
+  .filter((book) => book.pages > 500)
+  .filter((book) => book.hasMovieAdaptation);
+
+console.log(longBooksWithMovie);
+
+const adventureBooks = books.filter((book) => book.genres.includes('adventure'));
+console.log(adventureBooks);
