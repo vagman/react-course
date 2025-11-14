@@ -168,12 +168,21 @@ const updatedBook = {
 };
 updatedBook;
 
+// Arrow Functions
+// Write a function that takes the whole date property of a book and only returns the year that the book was released.
+// Date format: '1965-01-01'
+// function getPubYear(pubDate) {
+//   return pubDate.split("-")[0];
+// }
+
+const getPubYear = (pubDate) => pubDate.split("-")[0];
+console.log(getPubYear(publicationDate));
+
 // Template literals example
-const summary = `${title}, is a ${pages}-page long book, was written by ${author} and published in ${publicationDate.split('-')[0]}. The book has ${book.hasMovieAdaptation ? '' : 'not'} been adapted as a movie.`;
+const summary = `${title}, is a ${pages}-page long book, was written by ${author} and published in ${getPubYear(publicationDate)}. The book has ${book.hasMovieAdaptation ? '' : 'not'} been adapted as a movie.`;
 summary;
 
 // Ternaries instead of if/else statements
 const pagesRange = pages > 1000 ? 'over a thousand pages' : 'less that 1000 pages';
 pagesRange;
 console.log(`The book has ${pagesRange}.`);
-
