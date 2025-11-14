@@ -220,6 +220,8 @@ console.log(spanishTranslation);
 console.log(getTotalReviewCount(book));
 */
 
+
+/* 
 // Optional chaining (ES2020)
 function getTotalReviewCount(book) {
   const goodRead = book.reviews?.goodreads?.reviewsCount;
@@ -301,4 +303,25 @@ console.log(booksAfterDelete);
 // 3) Update a book object in Array
 const booksAfterUpdate = books.map((book) => book.id === 1 ? {...book, pages: 1210} : book);
 console.log(booksAfterUpdate);
+*/
+
+
+// Asynchronous JavaScript Promises
+fetch('https://jsonplaceholder.typicode.com/todos/')
+  .then(response => response.json())
+  .then(data => console.log(data));
+
+console.log('vagman');
+
+// Asynchronous JavaScript Async/Await
+async function getTodos() {
+  const response = await fetch('https://jsonplaceholder.typicode.com/todos/');
+  const data = await response.json();
+  console.log(data);
+  
+  return data;
+};
+
+const todos = getTodos();
+console.log(todos); 
 
