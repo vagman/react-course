@@ -65,15 +65,22 @@ function Header() {
 }
 
 function Menu() {
+  const pizzas = pizzaData;
+  const numberOfPizzas = pizzas.length;
+
   return (
     <main className="menu">
       <h2>Our Menu</h2>
 
-      <ul className="pizzas">
-        {pizzaData.map(pizza => (
-          <Pizza pizzaObj={pizza} key={pizza.name} />
-        ))}
-      </ul>
+      {numberOfPizzas > 0 ? (
+        <ul className="pizzas">
+          {pizzas.map(pizza => (
+            <Pizza pizzaObj={pizza} key={pizza.name} />
+          ))}
+        </ul>
+      ) : (
+        <p>We're still working on our menu. Please come back later :)</p>
+      )}
     </main>
   );
 }
@@ -96,13 +103,23 @@ function Footer() {
   const openHour = 8;
   const closeHour = 22;
   const isOpen = hour >= openHour && hour <= closeHour;
-  console.log(isOpen);
 
   // if (hour >= openHour && hour <= closeHour) alert('We are currently open!');
   // else alert('Sorry, we are closed!');
 
-  console.log(hour);
-
-  return <footer className="footer">{new Date().toLocaleTimeString()}. We are currently open!</footer>;
+  return (
+    <footer className="footer">
+      {isOpen ? (
+        <div className="order">
+          <p>We're open until {closeHour}:00. Come visit us or order online.</p>
+          <button className="btn">Order</button>
+        </div>
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00.
+        </p>
+      )}
+    </footer>
+  );
   // return React.createElement('footer', null, 'We are currently open!');
 }
