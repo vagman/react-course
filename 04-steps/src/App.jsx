@@ -5,6 +5,7 @@ const messages = ['Learn React ⚛️', 'Apply for jobs 💼', 'Invest your new 
 function App() {
   // React hook to manage the current step state
   const [step, setStep] = useState(1);
+  const [test, setTest] = useState({ name: 'Jonas' });
 
   function handlePrevious() {
     if (step > 1) setStep(step - 1);
@@ -12,6 +13,12 @@ function App() {
 
   function handleNext() {
     if (step < 3) setStep(step + 1);
+
+    // Bad Practise:
+    // test.name= 'Fred';
+
+    // Good Practise:
+    setTest({ name: 'Fred' });
   }
 
   return (
@@ -24,6 +31,7 @@ function App() {
 
       <p className="message">
         Step {step}: {messages[step - 1]}
+        {test.name}
       </p>
 
       <div className="buttons">
