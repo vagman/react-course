@@ -20,7 +20,7 @@ function App() {
       <Logo />
       <Form onAddItems={handleAddItems} />
       <PackingList items={items} onDeleteItem={handleDeleteItem} onToggleItem={handleToggleItem} />
-      <Statistics />
+      <Statistics items={items} />
     </div>
   );
 }
@@ -94,10 +94,32 @@ function Item({ item, onDeleteItem, onToggleItem }) {
   );
 }
 
-function Statistics() {
+function Statistics({ items }) {
+  if (items.length === 0) {
+    return (
+      <footer className="stats">
+        <em>Start adding some items to your packing list 🧳</em>
+      </footer>
+    );
+  }
+
+  const itemsTotalNum = items.length;
+  const itemsPackedNum = items.filter(item => item.packed === true).length;
+  const itemsPercentagePacked = Math.round((itemsPackedNum / itemsTotalNum) * 100) || 0;
+
+  console.log(itemsPackedNum);
+  console.log(itemsTotalNum);
+  console.log(itemsPercentagePacked);
+
   return (
     <footer className="stats">
-      <em>💼 You have X items on your FileList, and you already have packed X (X%)</em>
+      <em>
+        {itemsPercentagePacked === 100
+          ? 'You got everything! Ready to go ✈️'
+          : `
+        💼 You have ${itemsTotalNum} items on your FileList, and you already have packed ${itemsPackedNum} (
+        ${itemsPercentagePacked}%)`}
+      </em>
     </footer>
   );
 }
