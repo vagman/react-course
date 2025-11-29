@@ -18,3 +18,13 @@ const initialFriends = [
     balance: 0,
   },
 ];
+
+
+function App() {  return (
+    <div>
+      <h1>Eat n Split</h1>
+    </div>
+  );
+}
+
+export default App;

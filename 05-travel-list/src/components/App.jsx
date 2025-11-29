@@ -24,7 +24,7 @@ function App() {
   }
 
   return (
-    <div className="app">
+    <div>
       <Logo />
       <Form onAddItems={handleAddItems} />
       <PackingList
