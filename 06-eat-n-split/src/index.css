@@ -118,9 +118,10 @@ form {
 }
 
 .form-add-friend {
-  grid-template-columns: 1fr 1.5fr;
+  grid-template-columns: max-content 1fr;
   margin-bottom: 1.6rem;
   padding: 1.2rem;
+  width: 100%;
 }
 
 .form-split-bill {
