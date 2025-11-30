@@ -30,17 +30,23 @@ function Button({ children, onClick }) {
 }
 
 function App() {
+  const [friends, setFriends] = useState(initialFriends);
   const [showAddFriend, setShowAddFriend] = useState(false);
 
   function handleShowAddFriend() {
     setShowAddFriend(show => !show);
   }
 
+  function handleFriend(friend) {
+    setFriends(friends => [...friends, friend]);
+    setShowAddFriend(false);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
-        <FriendsList />
-        {showAddFriend && <FormAddFriend />}
+        <FriendsList friends={friends} />
+        {showAddFriend && <FormAddFriend onAddFriend={handleFriend} />}
         <Button onClick={handleShowAddFriend}>{showAddFriend ? 'Close' : 'Add friend'}</Button>
       </div>
       <FormSplitBill />
@@ -48,8 +54,7 @@ function App() {
   );
 }
 
-function FriendsList() {
-  const friends = initialFriends;
+function FriendsList({ friends }) {
   return (
     <ul>
       {friends.map(friend => (
@@ -83,14 +88,37 @@ function Friend({ friend }) {
   );
 }
 
-function FormAddFriend() {
+function FormAddFriend({ onAddFriend }) {
+  const [name, setName] = useState('');
+  const [image, setImage] = useState('https://i.pravatar.cc/48');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    // Guard clause
+    if (!name || !image) return;
+
+    const id = crypto.randomUUID();
+    const Friend = {
+      id,
+      name,
+      image: `${image}?u=${id}`,
+      balance: 0,
+    };
+
+    onAddFriend(Friend);
+
+    setName('');
+    setImage('https://i.pravatar.cc/48');
+  }
+
   return (
-    <form className="form-add-friend">
+    <form className="form-add-friend" onSubmit={handleSubmit}>
       <label>🧑‍🤝‍🧑Friend name</label>
-      <input type="text" />
+      <input value={name} type="text" onChange={event => setName(event.target.value)} />
 
       <label>🌇Image URL</label>
-      <input type="text" />
+      <input value={image} type="text" onChange={event => setImage(event.target.value)} />
 
       <Button>Add</Button>
     </form>
