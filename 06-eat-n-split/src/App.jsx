@@ -48,6 +48,13 @@ function App() {
     setShowAddFriend(false);
   }
 
+  function handleSplitBill(value) {
+    setFriends(friends =>
+      friends.map(friend => (friend.id === selectedFriend.id ? { ...friend, balance: friend.balance + value } : friend))
+    );
+    setSelectedFriend(null);
+  }
+
   return (
     <div className="app">
       <div className="sidebar">
@@ -57,7 +64,7 @@ function App() {
 
         <Button onClick={handleShowAddFriend}>{showAddFriend ? 'Close' : 'Add friend'}</Button>
       </div>
-      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} />}
+      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} onSplitBill={handleSplitBill} />}
     </div>
   );
 }
@@ -135,27 +142,44 @@ function FormAddFriend({ onAddFriend }) {
   );
 }
 
-function FormSplitBill({ selectedFriend }) {
+function FormSplitBill({ selectedFriend, onSplitBill }) {
+  const [bill, setBill] = useState('');
+  const [userBill, setUserBill] = useState('');
+  const friendsBill = bill ? bill - userBill : '';
+  const [payer, setPayer] = useState('user');
+
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    // Guard clause
+    if (!bill || !payer) return;
+    onSplitBill(payer === 'user' ? friendsBill : -userBill);
+  }
+
   return (
     <form className="form-split-bill">
       <h2>Split a bill with {selectedFriend.name}</h2>
 
       <label>💰Bill value</label>
-      <input type="text" />
+      <input value={bill} onChange={event => setBill(Number(event.target.value))} type="text" />
 
       <label>🧑‍🦱Your expense</label>
-      <input type="text" />
+      <input
+        value={userBill}
+        onChange={event => setUserBill(Number(event.target.value) > bill ? userBill : Number(event.target.value))}
+        type="text"
+      />
 
       <label>🧑‍🤝‍🧑{selectedFriend.name}'s expense</label>
-      <input type="text" disabled />
+      <input value={friendsBill} type="text" disabled />
 
       <label>🤑Who is paying the bill</label>
-      <select type="text">
+      <select value={payer} onChange={event => setPayer(event.target.value)} type="text">
         <option value="you">You</option>
-        <option value="x">{selectedFriend.name}</option>
+        <option value={selectedFriend.name}>{selectedFriend.name}</option>
       </select>
 
-      <Button>Split bill</Button>
+      <Button onClick={handleSubmit}>Split bill</Button>
     </form>
   );
 }
