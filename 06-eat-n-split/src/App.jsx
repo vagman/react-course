@@ -38,13 +38,13 @@ function App() {
     setShowAddFriend(show => !show);
   }
 
-  function handleFriend(friend) {
+  function handleAddFriend(friend) {
     setFriends(friends => [...friends, friend]);
     setShowAddFriend(false);
   }
 
   function handleFriendSelection(friend) {
-    setSelectedFriend(currentlySelected => (currentlySelected?.id === friend.id ? null : friend));
+    setSelectedFriend(currentlySelectedFriend => (currentlySelectedFriend?.id === friend.id ? null : friend));
     setShowAddFriend(false);
   }
 
@@ -60,11 +60,13 @@ function App() {
       <div className="sidebar">
         <FriendsList friends={friends} onFriendSelection={handleFriendSelection} selectedFriend={selectedFriend} />
 
-        {showAddFriend && <FormAddFriend onAddFriend={handleFriend} />}
+        {showAddFriend && <FormAddFriend onAddFriend={handleAddFriend} />}
 
         <Button onClick={handleShowAddFriend}>{showAddFriend ? 'Close' : 'Add friend'}</Button>
       </div>
-      {selectedFriend && <FormSplitBill selectedFriend={selectedFriend} onSplitBill={handleSplitBill} />}
+      {selectedFriend && (
+        <FormSplitBill selectedFriend={selectedFriend} onSplitBill={handleSplitBill} key={selectedFriend.id} />
+      )}
     </div>
   );
 }
@@ -94,7 +96,7 @@ function Friend({ friend, onFriendSelection, selectedFriend }) {
 
       {friend.balance > 0 && (
         <p className="green">
-          Your friend {friend.name} owes you {Math.abs(friend.balance)}€.
+          {friend.name} owes you {Math.abs(friend.balance)}€.
         </p>
       )}
 
@@ -116,14 +118,14 @@ function FormAddFriend({ onAddFriend }) {
     if (!name || !image) return;
 
     const id = crypto.randomUUID();
-    const Friend = {
+    const newFriend = {
       id,
       name,
       image: `${image}?u=${id}`,
       balance: 0,
     };
 
-    onAddFriend(Friend);
+    onAddFriend(newFriend);
 
     setName('');
     setImage('https://i.pravatar.cc/48');
@@ -152,34 +154,34 @@ function FormSplitBill({ selectedFriend, onSplitBill }) {
     e.preventDefault();
 
     // Guard clause
-    if (!bill || !payer) return;
+    if (bill === '' || userBill === '') return;
     onSplitBill(payer === 'user' ? friendsBill : -userBill);
   }
 
   return (
-    <form className="form-split-bill">
+    <form className="form-split-bill" onSubmit={handleSubmit}>
       <h2>Split a bill with {selectedFriend.name}</h2>
 
-      <label>💰Bill value</label>
+      <label>💰 Bill value</label>
       <input value={bill} onChange={event => setBill(Number(event.target.value))} type="text" />
 
-      <label>🧑‍🦱Your expense</label>
+      <label>🧑‍🦱 Your expense</label>
       <input
         value={userBill}
         onChange={event => setUserBill(Number(event.target.value) > bill ? userBill : Number(event.target.value))}
         type="text"
       />
 
-      <label>🧑‍🤝‍🧑{selectedFriend.name}'s expense</label>
+      <label>🧑‍🤝‍🧑 {selectedFriend.name}'s expense</label>
       <input value={friendsBill} type="text" disabled />
 
-      <label>🤑Who is paying the bill</label>
+      <label>🤑 Who is paying the bill</label>
       <select value={payer} onChange={event => setPayer(event.target.value)} type="text">
         <option value="you">You</option>
         <option value={selectedFriend.name}>{selectedFriend.name}</option>
       </select>
 
-      <Button onClick={handleSubmit}>Split bill</Button>
+      <Button>Split bill</Button>
     </form>
   );
 }
