@@ -55,7 +55,7 @@ function TabContent({ item }) {
   const [showDetails, setShowDetails] = useState(true);
   const [likes, setLikes] = useState(0);
 
-  function handleInc() {
+  function handleLikesIncrement() {
     setLikes(likes + 1);
   }
 
@@ -69,7 +69,7 @@ function TabContent({ item }) {
 
         <div className="hearts-counter">
           <span>{likes} ❤️</span>
-          <button onClick={handleInc}>+</button>
+          <button onClick={handleLikesIncrement}>+</button>
           <button>+++</button>
         </div>
       </div>
