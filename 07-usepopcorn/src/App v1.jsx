@@ -1,5 +1,4 @@
-// This was created based on the Section 12: Effects & Data Fetching.
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const tempMovieData = [
   {
@@ -48,20 +47,9 @@ const tempWatchedData = [
 
 const average = arr => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
-const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
-if (!OMDB_API_KEY) {
-  console.error('Missing VITE_OMDB_API_KEY in .env');
-}
-
 export default function App() {
-  const [movies, setMovies] = useState([]);
-  const [watched, setWatched] = useState([]);
-
-  useEffect(function () {
-    fetch(`http://www.omdbapi.com/?i=tt3896198&apikey=${OMDB_API_KEY}&s=Interstellar`)
-      .then(response => response.json())
-      .then(data => setMovies(data.Search));
-  }, []);
+  const [movies, setMovies] = useState(tempMovieData);
+  const [watched, setWatched] = useState(tempWatchedData);
 
   return (
     <>
