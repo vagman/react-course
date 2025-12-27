@@ -71,10 +71,10 @@ export default function App() {
         if (!response.ok) {
           throw new Error('Something went wrong fetching movies');
         }
+
         const data = await response.json();
-        if (data.Response === 'False') {
-          throw new Error('Movie not found');
-        }
+        if (data.Response === 'False') throw new Error('🍿 Movie not found');
+
         setMovies(data.Search);
       } catch (error) {
         console.error(error.message);
