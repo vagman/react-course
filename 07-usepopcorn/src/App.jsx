@@ -1,5 +1,6 @@
 // This was created based on the Section 12: Effects & Data Fetching.
 import { useState, useEffect } from 'react';
+import StarRating from './components/StarRating.jsx';
 
 const average = arr => arr.reduce((acc, cur, i, arr) => acc + cur / arr.length, 0);
 
@@ -201,12 +202,73 @@ function MovieWatchedBox() {
 */
 
 function MovieDetails({ selectedId, onCloseMovie }) {
+  const [movie, setMovie] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
+
+  const {
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie;
+
+  useEffect(
+    function () {
+      async function getMovieDetails() {
+        setIsLoading(true);
+        const response = await fetch(`http://www.omdbapi.com/?apikey=${OMDB_API_KEY}&i=${selectedId}`);
+        const data = await response.json();
+        setMovie(data);
+        setIsLoading(false);
+      }
+      getMovieDetails();
+    },
+    [selectedId]
+  );
+
   return (
     <div className="details">
-      <button className="btn-back" onClick={onCloseMovie}>
-        &larr;
-      </button>
-      {selectedId}
+      {isLoading ? (
+        <Loader />
+      ) : (
+        <>
+          <header>
+            <button className="btn-back" onClick={onCloseMovie}>
+              &larr;
+            </button>
+            <img src={poster} alt={`Poster of ${title} movie.`} />
+            <div className="details-overview">
+              <h2>{title}</h2>
+              <p>
+                {released} &bull; {runtime}
+              </p>
+              <p>{genre}</p>
+              <p>⭐️ {imdbRating} IMDb rating</p>
+            </div>
+          </header>
+          <section>
+            <div className="rating">
+              <StarRating maxRating={10} size={24} />
+            </div>
+
+            <p>
+              <em>Plot:</em> {plot}
+            </p>
+            <p>
+              <strong>Starring Actors:</strong> {actors}
+            </p>
+            <p>
+              <strong>Directed by </strong> {director}
+            </p>
+          </section>
+        </>
+      )}
     </div>
   );
 }
