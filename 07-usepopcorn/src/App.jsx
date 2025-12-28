@@ -59,7 +59,7 @@ export default function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const query = 'sdfaasd';
+  const query = 'interstellar';
 
   useEffect(function () {
     async function fetchMovies() {
@@ -97,7 +97,7 @@ export default function App() {
         <Box>
           {/* {isLoading ? <Loader /> : <MoviesList movies={movies} />} */}
           {isLoading && <Loader />}
-          {isLoading && !error && <MoviesList movies={movies} />}
+          {!isLoading && !error && <MoviesList movies={movies} />}
           {error && <ErrorMessage message={error} />}
         </Box>
 
