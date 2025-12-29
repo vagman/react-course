@@ -56,6 +56,20 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     [selectedId]
   );
 
+  // Update Browser title with movie title
+  useEffect(
+    function () {
+      // Guard clause
+      if (!title) return;
+      document.title = `Movie | ${title}`;
+
+      return function () {
+        document.title = 'usePopcorn';
+      };
+    },
+    [title]
+  );
+
   return (
     <div className="details">
       {isLoading ? (
