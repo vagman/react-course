@@ -2,8 +2,7 @@ import { StrictMode } from 'react';
 // import { useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import './index.css';
-import App from './App.jsx';
-import StarRating from './components/StarRating.jsx';
+import App from './components/App.jsx';
 
 // function Test() {
 //   const [movieRating, setMovieRating] = useState(0);

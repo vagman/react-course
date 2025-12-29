@@ -1,16 +1,17 @@
 // This was created based on the Section 12: Effects & Data Fetching.
 import { useState, useEffect } from 'react';
-import Loader from './components/Loader.jsx';
-import ErrorMessage from './components/ErrorMessage.jsx';
-import NavBar from './components/NavBar.jsx';
-import NumResults from './components/NumResults.jsx';
-import Search from './components/Search.jsx';
-import Main from './components/Main.jsx';
-import Box from './components/Box.jsx';
-import MoviesList from './components/MovieList.jsx';
-import MovieDetails from './components/MovieDetails.jsx';
-import WatchedSummary from './components/WatchedSummary.jsx';
-import WatchedMoviesList from './components/WatchedMoviesList.jsx';
+
+import Loader from './Loader.jsx';
+import ErrorMessage from './ErrorMessage.jsx';
+import NavBar from './NavBar.jsx';
+import NumResults from './NumResults.jsx';
+import Search from './Search.jsx';
+import Main from './Main.jsx';
+import Box from './Box.jsx';
+import MoviesList from './MovieList.jsx';
+import MovieDetails from './MovieDetails.jsx';
+import WatchedSummary from './WatchedSummary.jsx';
+import WatchedMoviesList from './WatchedMoviesList.jsx';
 
 const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 if (!OMDB_API_KEY) {
@@ -35,6 +36,10 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched(watched => [...watched, movie]);
+  }
+
+  function handleRemoveWatched(id) {
+    setWatched(watched => watched.filter(movie => movie.imdbID !== id));
   }
 
   useEffect(
@@ -90,11 +95,16 @@ export default function App() {
 
         <Box>
           {selectedMovieId ? (
-            <MovieDetails selectedId={selectedMovieId} onCloseMovie={handleCloseMovie} />
+            <MovieDetails
+              selectedId={selectedMovieId}
+              onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatched}
+              watched={watched}
+            />
           ) : (
             <>
               <WatchedSummary watched={watched} />
-              <WatchedMoviesList watched={watched} />
+              <WatchedMoviesList watched={watched} onDeleteWatched={handleRemoveWatched} />
             </>
           )}
         </Box>
