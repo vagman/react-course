@@ -1,4 +1,4 @@
-// This was created based on the Section 13: Custom Hooks, Refs and More State
+// This was created based on the Section 12: Effects & Data Fetching.
 import { useState, useEffect } from 'react';
 
 import Loader from './Loader.jsx';
@@ -21,15 +21,10 @@ if (!OMDB_API_KEY) {
 export default function App() {
   const [query, setQuery] = useState('');
   const [movies, setMovies] = useState([]);
+  const [watched, setWatched] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
   const [selectedMovieId, setSelectedMovieId] = useState(null);
-
-  // const [watched, setWatched] = useState([]);
-  const [watched, setWatched] = useState(() => {
-    const storedWatchedMovies = JSON.parse(localStorage.getItem('watched')) || [];
-    return storedWatchedMovies;
-  });
 
   function handleSelectedMovie(movieId) {
     setSelectedMovieId(selectedMovieId => (movieId === selectedMovieId ? null : movieId));
@@ -41,20 +36,11 @@ export default function App() {
 
   function handleAddWatched(movie) {
     setWatched(watched => [...watched, movie]);
-    // Save watched movies to local storage
-    // localStorage.setItem('watched', JSON.stringify([...watched, movie]));
   }
 
   function handleRemoveWatched(id) {
     setWatched(watched => watched.filter(movie => movie.imdbID !== id));
   }
-
-  useEffect(
-    function () {
-      localStorage.setItem('watched', JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   useEffect(
     function () {
