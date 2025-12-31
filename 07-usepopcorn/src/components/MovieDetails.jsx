@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from 'react';
 import Loader from './Loader.jsx';
 import StarRating from './StarRating.jsx';
+import { useKey } from '../hooks/useKey.js';
 
 const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 if (!OMDB_API_KEY) {
@@ -50,23 +51,9 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     onCloseMovie();
   }
 
-  useEffect(
-    function () {
-      function callback(event) {
-        if (event.code === 'Escape') {
-          onCloseMovie();
-        }
-      }
+  useKey('Escape', onCloseMovie);
 
-      document.addEventListener('keydown', callback);
-
-      return function () {
-        document.removeEventListener('keydown', callback);
-      };
-    },
-    [onCloseMovie]
-  );
-
+  // Effect to fetch movie details when selectedId changes
   useEffect(
     function () {
       async function getMovieDetails() {
@@ -81,7 +68,7 @@ function MovieDetails({ selectedId, onCloseMovie, onAddWatched, watched }) {
     [selectedId]
   );
 
-  // Update Browser title with movie title
+  // Effect to Update Browser title with movie title
   useEffect(
     function () {
       // Guard clause

@@ -1,5 +1,5 @@
 // This was created based on the Section 13: Custom Hooks, Refs and More State
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 import Loader from './Loader.jsx';
 import ErrorMessage from './ErrorMessage.jsx';

@@ -1,4 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
+import { useKey } from '../hooks/useKey.js';
 
 function Search({ query, setQuery, setSelectedMovieId }) {
   // Focus the input field whenever the query changes
@@ -13,22 +14,14 @@ function Search({ query, setQuery, setSelectedMovieId }) {
 
   // Same as above but using ref
   const inputElement = useRef(null);
-  useEffect(
-    function () {
-      function callback(e) {
-        if (document.activeElement === inputElement.current) return;
-        if (e.code === 'Enter' || e.code === 'NumpadEnter') {
-          inputElement.current.focus();
-          setQuery('');
-          setSelectedMovieId(null);
-        }
-      }
 
-      document.addEventListener('keydown', callback);
-      return () => document.removeEventListener('keydown', callback);
-    },
-    [query, setQuery]
-  );
+  // TODO: Add functionality also for numpad Enter key
+  useKey('Enter', () => {
+    if (document.activeElement === inputElement.current) return;
+    inputElement.current.focus();
+    setQuery('');
+    setSelectedMovieId(null);
+  });
 
   return (
     <input
