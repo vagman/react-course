@@ -12,7 +12,9 @@ import MoviesList from './MovieList.jsx';
 import MovieDetails from './MovieDetails.jsx';
 import WatchedSummary from './WatchedSummary.jsx';
 import WatchedMoviesList from './WatchedMoviesList.jsx';
+
 import { useMovies } from '../hooks/useMovies.js';
+import { useLocalStorageState } from '../hooks/useLocalStorageState.js';
 
 const OMDB_API_KEY = import.meta.env.VITE_OMDB_API_KEY;
 if (!OMDB_API_KEY) {
@@ -23,13 +25,8 @@ export default function App() {
   const [query, setQuery] = useState('');
   const [selectedMovieId, setSelectedMovieId] = useState(null);
 
+  const [watched, setWatched] = useLocalStorageState('watched');
   const { movies, isLoading, error } = useMovies(query);
-
-  // const [watched, setWatched] = useState([]);
-  const [watched, setWatched] = useState(() => {
-    const storedWatchedMovies = JSON.parse(localStorage.getItem('watched')) || [];
-    return storedWatchedMovies;
-  });
 
   function handleSelectedMovie(movieId) {
     setSelectedMovieId(selectedMovieId => (movieId === selectedMovieId ? null : movieId));
@@ -48,13 +45,6 @@ export default function App() {
   function handleRemoveWatched(id) {
     setWatched(watched => watched.filter(movie => movie.imdbID !== id));
   }
-
-  useEffect(
-    function () {
-      localStorage.setItem('watched', JSON.stringify(watched));
-    },
-    [watched]
-  );
 
   return (
     <>
