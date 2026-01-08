@@ -1,21 +1,22 @@
-// Lecture 181: Removing Boilerplate Code with Class Fields (Modern React)
-
 import React from 'react';
 import Weather from './Weather.jsx';
-import Input from './Input.jsx';
-
 import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
 
 class App extends React.Component {
-  state = {
-    location: 'lisbon',
-    isLoading: false,
-    displayLocation: '',
-    weather: {},
-    countryCode: '',
-  };
+  constructor(props) {
+    super(props);
 
-  fetchWeather = async () => {
+    this.state = {
+      location: 'lisbon',
+      isLoading: false,
+      displayLocation: '',
+      weather: {},
+      countryCode: '',
+    };
+    this.fetchWeather = this.fetchWeather.bind(this);
+  }
+
+  async fetchWeather() {
     try {
       this.setState({ isLoading: true });
       polyfillCountryFlagEmojis();
@@ -39,15 +40,20 @@ class App extends React.Component {
     } finally {
       this.setState({ isLoading: false });
     }
-  };
-
-  setLocation = event => this.setState({ location: event.target.value });
+  }
 
   render() {
     return (
       <div className="App">
         <h1>Classy Weather</h1>
-        <Input value={this.props.location} location={this.state.location} onChangeLocation={this.setLocation} />
+        <div>
+          <input
+            type="text"
+            placeholder="Search for location..."
+            value={this.state.location}
+            onChange={event => this.setState({ location: event.target.value })}
+          />
+        </div>
         <button className="btn" onClick={this.fetchWeather}>
           Get Weather
         </button>
