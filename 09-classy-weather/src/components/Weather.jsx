@@ -3,6 +3,10 @@ import Day from './Day.jsx';
 import { getCountryIcon } from '../weatherUtils.js';
 
 class Weather extends React.Component {
+  componentsWillUnmount() {
+    console.log('Weather component unmounted');
+  }
+
   render() {
     const { temperature_2m_max: max, temperature_2m_min: min, time: dates, weathercode: codes } = this.props.weather;
     const { countryCode } = this.props;

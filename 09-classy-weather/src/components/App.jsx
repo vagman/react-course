@@ -8,7 +8,7 @@ import { polyfillCountryFlagEmojis } from 'country-flag-emoji-polyfill';
 
 class App extends React.Component {
   state = {
-    location: 'lisbon',
+    location: '',
     isLoading: false,
     displayLocation: '',
     weather: {},
@@ -16,6 +16,8 @@ class App extends React.Component {
   };
 
   fetchWeather = async () => {
+    if (this.state.location.length < 3) return this.setState({ weather: {} });
+
     try {
       this.setState({ isLoading: true });
       polyfillCountryFlagEmojis();
@@ -43,14 +45,27 @@ class App extends React.Component {
 
   setLocation = event => this.setState({ location: event.target.value });
 
+  // useEffect() [] replacement
+  componentDidMount() {
+    // this.fetchWeather();
+
+    this.setState({ location: localStorage.getItem('location') || '' });
+  }
+
+  // useEffect() [location] replacement
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.location !== this.state.location) {
+      this.fetchWeather();
+    }
+
+    localStorage.setItem('location', this.state.location);
+  }
+
   render() {
     return (
-      <div className="App">
+      <div className="app">
         <h1>Classy Weather</h1>
         <Input value={this.props.location} location={this.state.location} onChangeLocation={this.setLocation} />
-        <button className="btn" onClick={this.fetchWeather}>
-          Get Weather
-        </button>
         {this.state.isLoading && <p className="loader">Loading...</p>}
         {this.state.weather.weathercode && (
           <Weather

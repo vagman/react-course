@@ -44,7 +44,7 @@ class App extends React.Component {
 
   render() {
     return (
-      <div className="App">
+      <div className="app">
         <h1>Classy Weather</h1>
         <div>
           <input
