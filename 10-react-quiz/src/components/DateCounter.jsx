@@ -10,17 +10,20 @@ function DateCounter() {
   const date = new Date('june 21 2027');
   date.setDate(date.getDate() + count);
 
-  const dec = function () {
+  const decrease = function () {
+    dispatch({ type: 'dec' });
     // setCount((count) => count - 1);
     // setCount(count => count - step);
   };
 
-  const inc = function () {
+  const increase = function () {
+    dispatch({ type: 'inc' });
     // setCount((count) => count + 1);
     // setCount(count => count + step);
   };
 
   const defineCount = function (e) {
+    dispatch({ type: 'setCount', payload: Number(e.target.value) });
     // setCount(Number(e.target.value));
   };
 
@@ -41,9 +44,9 @@ function DateCounter() {
       </div>
 
       <div>
-        <button onClick={dec}>-</button>
+        <button onClick={decrease}>-</button>
         <input value={count} onChange={defineCount} />
-        <button onClick={inc}>+</button>
+        <button onClick={increase}>+</button>
       </div>
 
       <p>{date.toDateString()}</p>
