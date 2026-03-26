@@ -1,7 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
 import StartScreen from './StartScreen.jsx';
-import Questions from './Questions.jsx';
+import Question from './Question.jsx';
 import Header from './Header.jsx';
 import Main from './Main.jsx';
 import Loader from './Loader.jsx';
@@ -11,6 +11,7 @@ const initialState = {
   questions: [],
   // status can be 'loading', 'error', 'ready', 'active' or 'finished' state
   status: 'loading',
+  questionIndex: 0,
 };
 
 function reducer(state, action) {
@@ -34,7 +35,7 @@ function reducer(state, action) {
 }
 
 function App() {
-  const [{ questions, status }, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, questionIndex }, dispatch] = useReducer(reducer, initialState);
 
   const numQuestions = questions.length;
 
@@ -52,7 +53,7 @@ function App() {
         {status === 'loading' && <Loader />}
         {status === 'error' && <Error />}
         {status === 'ready' && <StartScreen numQuestions={numQuestions} dispatch={dispatch} />}
-        {status === 'active' && <Questions />}
+        {status === 'active' && <Question question={questions[questionIndex]} />}
       </Main>
     </div>
   );
