@@ -1,6 +1,7 @@
 import { useEffect, useReducer } from 'react';
 
 import StartScreen from './StartScreen.jsx';
+import FinishScreen from './FinishScreen.jsx';
 import Question from './Question.jsx';
 import NextButton from './NextButton.jsx';
 import Header from './Header.jsx';
@@ -11,11 +12,12 @@ import Progress from './Progress.jsx';
 
 const initialState = {
   questions: [],
-  // status can be 'loading', 'error', 'ready', 'active' or 'finished' state
+  // status can be 'loading', 'error', 'ready', 'active' or 'finish' state
   status: 'loading',
   questionIndex: 0,
   answer: null,
   points: 0,
+  highscore: 0,
 };
 
 function reducer(state, action) {
@@ -43,13 +45,19 @@ function reducer(state, action) {
       };
     case 'nextQuestion':
       return { ...state, questionIndex: state.questionIndex + 1, answer: null };
+    case 'finish':
+      return {
+        ...state,
+        status: 'finish',
+        highscore: state.highscore > state.points ? state.highscore : state.points,
+      };
     default:
       throw new Error('Action unknown');
   }
 }
 
 function App() {
-  const [{ questions, status, questionIndex, answer, points }, dispatch] = useReducer(reducer, initialState);
+  const [{ questions, status, questionIndex, answer, points, highscore }, dispatch] = useReducer(reducer, initialState);
 
   const numQuestions = questions.length;
   const maxPossiblePoints = questions.reduce((previous, current) => previous + current.points, 0);
@@ -78,8 +86,16 @@ function App() {
               answer={answer}
             />
             <Question question={questions[questionIndex]} dispatch={dispatch} answer={answer} />
-            <NextButton dispatch={dispatch} answer={answer} />
+            <NextButton
+              dispatch={dispatch}
+              answer={answer}
+              questionIndex={questionIndex}
+              numberOfQuestions={numQuestions}
+            />
           </>
+        )}
+        {status === 'finish' && (
+          <FinishScreen points={points} maxPossiblePoints={maxPossiblePoints} highscore={highscore} />
         )}
       </Main>
     </div>
