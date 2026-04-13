@@ -1,4 +1,4 @@
-import logo from '../assets/react-logo-512.png';
+import logo from '/public/react-logo-512.png';
 
 function Header() {
   return (
