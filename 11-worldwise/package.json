@@ -7,9 +7,12 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "json-server data/cities.json --port 9000 delay 500"
   },
   "dependencies": {
+    "country-flag-emoji-polyfill": "^0.1.8",
+    "json-server": "^1.0.0-beta.15",
     "react": "^19.2.4",
     "react-dom": "^19.2.4",
     "react-router-dom": "^7.14.1"
