@@ -148,14 +148,14 @@ function FormSplitBill({ selectedFriend, onSplitBill }) {
   const [bill, setBill] = useState('');
   const [userBill, setUserBill] = useState('');
   const friendsBill = bill ? bill - userBill : '';
-  const [payer, setPayer] = useState('user');
+  const [payer, setPayer] = useState('you');
 
   function handleSubmit(e) {
     e.preventDefault();
 
     // Guard clause
     if (bill === '' || userBill === '') return;
-    onSplitBill(payer === 'user' ? friendsBill : -userBill);
+    onSplitBill(payer === 'you' ? friendsBill : -userBill);
   }
 
   return (
